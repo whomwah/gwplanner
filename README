@@ -32,5 +32,10 @@ trees
 vegetables
 wildlife
 
-The app is currently setup to run under Passenger, and comes as
-is with no support.
+This Sinatra app is currently setup to run under Passenger, you 
+can find installation instructions at:
+
+http://www.modrails.com/documentation/Users%20guide%20Apache.html#_sinatra
+
+I'm afraid the app comes as is, with no support.
+
