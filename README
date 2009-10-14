@@ -1,0 +1,33 @@
+BBC Gardeners' Planner as an .ics calendar
+------------------------------------------
+
+This app takes the data that is used to power:
+http://www.bbc.co.uk/gardening/calendar/ 
+
+and converts it into the .ics calendar format, so can subscribe to
+it in your favourite calendaring tool like iCal or Google Calendar:
+
+/planner.ics                         # full planner
+/planner.ics?s=pond,trees,wildlife   # custom planner
+
+Below are an example of the sections you can filter the calendar by.
+This may change at any time.
+
+beddingplants
+bulbs
+celebritytips
+climbingplants
+containers
+fruit
+greenhouse
+hedges
+herbs
+houseplants
+lawn
+perennials
+pond
+roses
+shrubs
+trees
+vegetables
+wildlife
