@@ -31,3 +31,6 @@ shrubs
 trees
 vegetables
 wildlife
+
+The app is currently setup to run under Passenger, and comes as
+is with no support.
