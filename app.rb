@@ -59,8 +59,10 @@ class Garden
         location      section
         url           task.xpath('r').first.content 
         klass         "PRIVATE"
-        dtstart       Date.new(n.year, start_month, start_day)
-        dtend         Date.new(n.year, end_month, end_day)
+        custom_property("DTSTART;VALUE=DATE", Date.new(n.year, start_month, start_day))
+        custom_property("DTEND;VALUE=DATE", Date.new(n.year, end_month, end_day))
+        #dtstart       Date.new(n.year, start_month, start_day)
+        #dtend         Date.new(n.year, end_month, end_day)
       end
     end
   end
