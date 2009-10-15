@@ -54,13 +54,13 @@ class Garden
       end_day     = task.xpath('e').first['d'].to_i
       
       @cal.event do
-        dtstart       Date.new(n.year, start_month, start_day)
-        dtend         Date.new(n.year, end_month, end_day)
         summary       task.xpath('tl').first.content   
         description   task.xpath('d').first.content 
         location      section
         url           task.xpath('r').first.content 
         klass         "PRIVATE"
+        dtstart       Date.new(n.year, start_month, start_day)
+        dtend         Date.new(n.year, end_month, end_day)
       end
     end
   end
