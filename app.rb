@@ -3,8 +3,14 @@ require 'nokogiri'
 require 'open-uri'
 require 'icalendar'
 require 'date'
+require 'rack/cache'
 
 include Icalendar
+
+use Rack::Cache, 
+  :verbose => true, 
+  :metastore => "file:cache/meta", 
+  :entitystore => "file:cache/body" 
 
 FEED_URI = 'http://www.bbc.co.uk/gardening/calendar/_xml/tasks.xml'
 
@@ -81,6 +87,7 @@ class Garden
 end
 
 get('/') { 
+  response["Cache-Control"] = "max-age=86400, public" 
   content_type 'text/plain', :charset => 'utf-8'
   c = Garden.new
   c.build_calendar
@@ -100,6 +107,8 @@ EOF
 }
 
 get('/planner.ics') { 
+  response["Cache-Control"] = "max-age=86400, public" 
+
   c = Garden.new
   if s = params["s"]
     c.build_calendar(s)

@@ -38,5 +38,12 @@ can find installation instructions at:
 
 http://www.modrails.com/documentation/Users%20guide%20Apache.html#_sinatra
 
+it require these gems:
+
+- sinatra
+- nokogiri
+- icalendar
+- rack/cache
+
 I'm afraid the app comes as is, with no support.
 
