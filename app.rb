@@ -92,8 +92,8 @@ BBC Gardeners' Planner as an .ics calendar
 Find tips for your garden any day of the year. You can subscribe to
 with the complete planner, or with optional sections listed at the bottom:
 
-/planner.ics                         # full planner
-/planner.ics?s=pond,trees,wildlife   # custom planner
+http://#{request.env['HTTP_HOST']}/planner.ics                         # full planner
+http://#{request.env['HTTP_HOST']}/planner.ics?s=pond,trees,wildlife   # custom planner
 
 #{sc} 
 EOF
