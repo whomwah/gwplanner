@@ -3,18 +3,12 @@ require 'nokogiri'
 require 'open-uri'
 require 'icalendar'
 require 'date'
-require 'rack/cache'
 
 include Icalendar
 
-use Rack::Cache, 
-  :verbose => true, 
-  :metastore => "file:cache/meta", 
-  :entitystore => "file:cache/body" 
-
 FEED_URI = 'http://www.bbc.co.uk/gardening/calendar/_xml/tasks.xml'
 
-class Garden
+class Planner
 	attr_reader :sections
 
   def initialize
@@ -38,11 +32,10 @@ class Garden
     end
 
     # add the calendar title and description
-    @cal.custom_property("X-WR-CALNAME;VALUE=TEXT", "Gardeners planner from the BBC")
+    @cal.custom_property("X-WR-CALNAME;VALUE=TEXT", "Gardeners' planner from the BBC")
     @cal.custom_property("X-WR-CALDESC;VALUE=TEXT", d_str)
 
-
-    # add the tasks
+    # add the events
     n = Time.now
     @doc.xpath('//tftd/tsks/t').each do |task|
       section = section_for(task.xpath('cs'))
@@ -54,15 +47,13 @@ class Garden
       end_day     = task.xpath('e').first['d'].to_i
       
       @cal.event do
-        summary       task.xpath('tl').first.content   
-        description   task.xpath('d').first.content 
-        location      section
-        url           task.xpath('r').first.content 
-        klass         "PRIVATE"
-        custom_property("DTSTART;VALUE=DATE", Date.new(n.year, start_month, start_day))
-        custom_property("DTEND;VALUE=DATE", Date.new(n.year, end_month, end_day))
-        #dtstart       Date.new(n.year, start_month, start_day)
-        #dtend         Date.new(n.year, end_month, end_day)
+        summary( task.xpath('tl').first.content )   
+        description( task.xpath('d').first.content )
+        location( section )
+        url( task.xpath('r').first.content )
+        klass( "PRIVATE" )
+        custom_property( "DTSTART;VALUE=DATE", Date.new(n.year, start_month, start_day) )
+        custom_property( "DTEND;VALUE=DATE", Date.new(n.year, end_month, end_day) )
       end
     end
   end
@@ -91,7 +82,7 @@ end
 get('/planner.ics') { 
   response["Cache-Control"] = "max-age=86400, public" 
   content_type 'text/calendar'
-  c = Garden.new
+  c = Planner.new
   if s = params["s"]
     c.build_calendar(s)
   else
@@ -103,9 +94,9 @@ get('/planner.ics') {
 get('/') { 
   response["Cache-Control"] = "max-age=86400, public" 
   content_type 'text/plain', :charset => 'utf-8'
-  c = Garden.new
+  c = Planner.new
   c.build_calendar
-  sc = c.sections.values.map {|s| s.gsub(/\s+/, '').downcase}.sort.join("\n")
+  sc = c.sections.values.map { |s| s.gsub(/\s+/, '').downcase }.sort.join("\n")
   <<EOF
 BBC Gardeners' Planner as an .ics calendar
 ------------------------------------------
