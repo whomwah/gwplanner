@@ -3,6 +3,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'icalendar'
 require 'date'
+require 'md5'
 
 include Icalendar
 
@@ -17,8 +18,8 @@ class Planner
     @cal = Calendar.new
     @cal.custom_property("X-WR-TIMEZONE;VALUE=TEXT", 'Europe/London')
 
-    fetch_data 
-    create_sections
+    fetch_xml 
+    generate_sections
   end
 
   def build_calendar(s = '')
@@ -34,11 +35,12 @@ class Planner
     # add the calendar title and description
     @cal.custom_property("X-WR-CALNAME;VALUE=TEXT", "Gardeners' planner from the BBC")
     @cal.custom_property("X-WR-CALDESC;VALUE=TEXT", d_str)
+    @cal.custom_property("X-WR-RELCALID", MD5.md5(@doc.to_s).to_s)
 
     # add the events
     n = Time.now
     @doc.xpath('//tftd/tsks/t').each do |task|
-      section = section_for(task.xpath('cs'))
+      section = section_for( task.xpath('cs') )
       next if !s_data.empty? and section and !s_data.include?(section.downcase)  
 
       start_month = task.xpath('b').first['m'].to_i 
@@ -58,7 +60,7 @@ class Planner
     end
   end
 
-  def create_sections
+  def generate_sections
     @doc.xpath('//tftd/cs/c').each do |section|
       @sections[section['id']] = section['nm']
     end
@@ -69,7 +71,7 @@ class Planner
     @sections[data.first.content]
   end
 
-  def fetch_data
+  def fetch_xml
     @doc = Nokogiri::XML(open(FEED_URI))
   end
 
