@@ -33,7 +33,7 @@ class Planner
     end
 
     # add the calendar title and description
-    @cal.custom_property("X-WR-CALNAME;VALUE=TEXT", "Gardeners' planner from the BBC")
+    @cal.custom_property("X-WR-CALNAME;VALUE=TEXT", "Gardeners planner from the BBC")
     @cal.custom_property("X-WR-CALDESC;VALUE=TEXT", d_str)
     @cal.custom_property("X-WR-RELCALID", MD5.md5(@doc.to_s).to_s)
     @cal.prodid = "-//BBC GARDENERS//Planner//EN"
