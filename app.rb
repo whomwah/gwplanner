@@ -36,6 +36,7 @@ class Planner
     @cal.custom_property("X-WR-CALNAME;VALUE=TEXT", "Gardeners' planner from the BBC")
     @cal.custom_property("X-WR-CALDESC;VALUE=TEXT", d_str)
     @cal.custom_property("X-WR-RELCALID", MD5.md5(@doc.to_s).to_s)
+    @cal.custom_property("PRODID", "-//BBC GARDENERS//Planner//EN")
 
     # add the events
     n = Time.now
