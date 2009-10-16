@@ -90,6 +90,7 @@ end
 
 get('/planner.ics') { 
   response["Cache-Control"] = "max-age=86400, public" 
+  content_type 'text/calendar', :charset => 'utf-8'
   c = Garden.new
   if s = params["s"]
     c.build_calendar(s)
