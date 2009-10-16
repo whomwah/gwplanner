@@ -53,7 +53,7 @@ class Planner
         description( task.xpath('d').first.content )
         location( section )
         url( task.xpath('r').first.content )
-        klass( "PRIVATE" )
+        klass( "PUBLIC" )
         custom_property( "DTSTART;VALUE=DATE", Date.new(n.year, start_month, start_day) )
         custom_property( "DTEND;VALUE=DATE", Date.new(n.year, end_month, end_day) )
       end
