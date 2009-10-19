@@ -3,7 +3,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'icalendar'
 require 'date'
-require 'md5'
+require 'digest/md5'
 
 include Icalendar
 
@@ -35,7 +35,7 @@ class Planner
     # add the calendar title and description
     @cal.custom_property("X-WR-CALNAME;VALUE=TEXT", "Gardeners planner from the BBC")
     @cal.custom_property("X-WR-CALDESC;VALUE=TEXT", d_str)
-    @cal.custom_property("X-WR-RELCALID", MD5.md5(@doc.to_s).to_s)
+    @cal.custom_property("X-WR-RELCALID", x_wr_relcalid(@doc.to_s))
     @cal.prodid = "-//BBC GARDENERS//Planner//EN"
 
     # add the events
@@ -78,6 +78,12 @@ class Planner
 
   def to_ical
     @cal.to_ical
+  end
+
+  def x_wr_relcalid(str)
+    s = Digest::MD5.hexdigest(str)
+    p = s.match(/(........)(....)(....)(....)(............)/)
+    sprintf('%.8s:%.4s:%.4s:%.4s:%.12s', p[1], p[2], p[3], p[4], p[5])
   end
 
 end
