@@ -42,7 +42,7 @@ It requires these gems to be installed:
 
 - sinatra
 - nokogiri
-- icalendar
+- icalendar v1.0
 - rack/cache
 
 I'm afraid the app comes as is, with no support.
